@@ -43,12 +43,21 @@ if(ENABLE_GPU)
 
    set (THROW_ERROR OFF)
 
-   if(NOT GPU_FULLY_OPTIMIZED)
-      if(NOT GPU_MANUAL_TRANSFER)
-         if(NOT GPU_AUTO_TRANSFER)
+   if(NOT DEFINED GPU_FULLY_OPTIMIZED)
+      if(NOT DEFINED GPU_MANUAL_TRANSFER)
+         if(NOT DEFINED GPU_AUTO_TRANSFER)
             set(GPU_AUTO_TRANSFER ON)
          endif()
       endif()
+   endif()
+
+   if(NOT DEFINED CPU_AUTO_TRANSFER)
+      set(CPU_AUTO_TRANSFER ON)
+   endif()
+
+   if(CPU_AUTO_TRANSFER)
+      add_definitions(-DCPU_AUTO_TRANSFER)
+      message(STATUS "Building with CPU_AUTO_TRANSFER Mode ON.")
    endif()
 
    if(GPU_FULLY_OPTIMIZED)
@@ -77,13 +86,6 @@ if(ENABLE_GPU)
 
    if(THROW_ERROR)
       message(FATAL_ERROR "GPU_FULLY_OPTIMIZED, GPU_MANUAL_TRANSFER & GPU_AUTO_TRANSFER are all mutuallly exclusive!!")
-   endif()
-
-   if(CPU_AUTO_TRANSFER)
-      add_definitions(-DCPU_AUTO_TRANSFER)
-      message(STATUS "Building with CPU_AUTO_TRANSFER Mode ON. Please compile with -DCPU_AUTO_TRANSFER=OFF to disable GPU development mode")
-   else()
-      message(STATUS "Building with CPU_AUTO_TRANSFER Mode OFF. Please compile with -DCPU_AUTO_TRANSFER=ON to enable GPU development mode")
    endif()
 
    # Options to know which devices we are doing AOT for

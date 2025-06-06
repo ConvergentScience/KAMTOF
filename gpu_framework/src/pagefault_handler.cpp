@@ -128,9 +128,7 @@ void pagefault_handler(int sig, siginfo_t *info, void *context)
 // Setup the the custom pagefault handler
 void setup_pagefault_handler()
 {
-   in_const_operator = 0; // This should only be changed to 0,1 in the data access calls and reset to 0 in pagefault handler
-
-   system_page_size = sysconf(_SC_PAGESIZE); // Get the system page size
+   in_const_operator = false; // This should only be changed to 0,1 in the data access calls and reset to 0 in pagefault handler
 
    struct sigaction sa;
    memset(&sa, 0, sizeof(sa)); // Zero out the struct completely
