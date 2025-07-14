@@ -4,6 +4,48 @@
 #include "mpi_utils.h"
 #include "pagefault_handler.h"
 
+void test_bandwidth()
+{
+   if(numprocs != 2)
+   {
+      printf(" ERROR : This should only be run with 2 procs! Not more Not Less!\n");
+      return;
+   }
+   size_t num_gb = 8;
+   size_t num_bytes = static_cast<size_t>(20) * 1024 * 1024 * 1024;
+   assert(num_bytes % sizeof(double) == 0);
+   size_t num_elements = num_bytes / sizeof(double);
+   double* device_ptr = GDF::malloc_gpu_var<double>(num_elements);
+   
+   if(rank == 0)
+   {
+      GDF::memset_gpu_var(device_ptr, 1, num_elements);
+   }
+   else
+   {
+      assert(rank == 1);
+      GDF::memset_gpu_var(device_ptr, 0, num_elements);
+   }
+
+   MPI_Barrier(MPI_COMM_WORLD);
+
+   auto start = std::chrono::high_resolution_clock::now();
+   if(rank ==0)
+   {
+      MPI_Send(device_ptr, num_elements, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD);
+   }
+   else
+   {
+      assert(rank == 1);
+      MPI_Recv(device_ptr, num_elements, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+   }
+   auto end = std::chrono::high_resolution_clock::now();
+   std::chrono::duration<double> elapsed = end - start;
+
+   double bandwidth = num_gb / elapsed.count();
+   printf("RANK %d | MPI device-to-device transfer took %.3f sec: %.2f GB/s\n", rank, elapsed.count(), bandwidth);
+}
+
 int main (int argc, char** argv)
 {
    mpi_init(&argc, &argv);
@@ -48,6 +90,7 @@ int main (int argc, char** argv)
    else
    {
       backend_testing();
+      test_bandwidth();
    }
 
    m_silo.clear_entries();

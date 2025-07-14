@@ -20,14 +20,14 @@ source ${KAMTOF_ROOT}/scripts/export_roots.sh
 # Check all required environment variables
 require_env_var HPCX_ROOT
 require_env_var CUDA_ROOT
-require_env_var ROCM_ROOT
+#require_env_var ROCM_ROOT
 require_env_var ONEAPI_ROOT
 require_env_var ONEMATH_ROOT
 
 source ${KAMTOF_ROOT}/scripts/env/oneAPI.sh
 source ${KAMTOF_ROOT}/scripts/env/hpcx.sh
 source ${KAMTOF_ROOT}/scripts/env/cuda.sh
-source ${KAMTOF_ROOT}/scripts/env/rocm.sh
+#source ${KAMTOF_ROOT}/scripts/env/rocm.sh
 source ${KAMTOF_ROOT}/scripts/env/oneMath.sh
 
 export CC=icx

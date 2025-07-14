@@ -1,6 +1,7 @@
 #include <sys/mman.h>
 #include <string.h>
 #include <numeric>
+#include <unistd.h>
 
 #include "logger.hpp"
 #include "datasetbase.h"

@@ -65,9 +65,11 @@ if(ENABLE_GPU)
 
    # HW is set to ALL by default is no argument was provided
    if(NOT HW)
-      set(HW "ALL")
+      # set(HW "ALL")
+      set(HW "NVDGPU")
       message(STATUS "Default HW set to ALL. Choose a subset from -DHW='<INTGPU;NVDGPU;AMDPGU;SYCLCPU;ALL>' to specify the required hardware")
-      set(SYCLALL ON)
+      #set(SYCLALL ON)
+      set(NVDGPU ON)
    else()
       string(TOUPPER "${HW}" HW)
       # Iterate through the list to find all the provided HW options
