@@ -11,8 +11,8 @@ void test_bandwidth()
       printf(" ERROR : This should only be run with 2 procs! Not more Not Less!\n");
       return;
    }
-   size_t num_gb = 8;
-   size_t num_bytes = static_cast<size_t>(20) * 1024 * 1024 * 1024;
+   size_t num_gb = 12;
+   size_t num_bytes = num_gb * 1024 * 1024 * 1024;
    assert(num_bytes % sizeof(double) == 0);
    size_t num_elements = num_bytes / sizeof(double);
    double* device_ptr = GDF::malloc_gpu_var<double>(num_elements);
