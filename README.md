@@ -117,12 +117,12 @@ KAMTOF contains 3 different executables:
 This artifact description ([KAMTOF_AD.pdf](https://github.com/user-attachments/files/21623194/KAMTOF_AD.pdf)) is intended to demonstrate a multi-CPU, multi-GPU Laplace solver, based on an existing MPI-based CPU Laplace solver ported using KAMTOF. We provide detailed instructions to generate results that shows the speed up of the GPU solver compared to the CPU solver and the accuracy verification of the GPU solver results.
 
 ## Contributors
-Sidarth Narayanan (Convergent Science),
-Josin Tom (Convergent Science),
-Joshua Duncan (Convergent Science),
-Yantao Zhang (Intel Corporation),
-Mohsen Moghadasi Barazandeh (Intel Corporation),
-Sparsh Ganju (Convergent Science),
-Raju Mandhapati (Convergent Science),
-Yogiraj Mantri (Convergent Science),
-Cooper Burns (Convergent Science)
+- Sidarth Narayanan (Convergent Science),
+- Josin Tom (Convergent Science),
+- Joshua Duncan (Convergent Science),
+- Yantao Zhang (Intel Corporation),
+- Mohsen Moghadasi Barazandeh (Intel Corporation),
+- Sparsh Ganju (Convergent Science),
+- Raju Mandhapati (Convergent Science),
+- Yogiraj Mantri (Convergent Science),
+- Cooper Burns (Convergent Science)
