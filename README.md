@@ -123,6 +123,6 @@ Joshua Duncan (Convergent Science),
 Yantao Zhang (Intel Corporation),
 Mohsen Moghadasi Barazandeh (Intel Corporation),
 Sparsh Ganju (Convergent Science),
-Raju Mandhapati Convergent Science),
+Raju Mandhapati (Convergent Science),
 Yogiraj Mantri (Convergent Science),
 Cooper Burns (Convergent Science)
