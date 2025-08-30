@@ -17,13 +17,14 @@
 #include "pagefault_handler.h"
 #endif
 
-
 int main (int argc, char** argv)
 {
    mpi_init(&argc, &argv);
 
 #ifdef ENABLE_GPU
-   setup_pagefault_handler();
+   #ifdef CPU_AUTO_TRANSFER
+      system_page_size = sysconf(_SC_PAGESIZE); // Get the system page size
+   #endif
 #endif
 
    // default name of input file
@@ -71,7 +72,7 @@ int main (int argc, char** argv)
    gpu_solver            = input_data_ptr->use_gpu_solver;   // use_gpu_solver
    implicit_solver       = input_data_ptr->implicit_solver;  // use implicit_solver
    tol                   = input_data_ptr->tol_val;          // tolerance at which solver will stop
-   tol_type              = input_data_ptr->tol_type;         // 0: absolute , 1: relative
+   tol_type              = input_data_ptr->tol_type;         // 0: absolute , 1: relative, 2: iteration_count
    solver_type           = input_data_ptr->solver_type;      // 0: jacobi , 1: bicgstab
    num_iter              = input_data_ptr->num_iter;         // number of inner iterations
    gpu_global_range      = input_data_ptr->gpu_global_range; // GPU global range
@@ -104,9 +105,10 @@ int main (int argc, char** argv)
 
       solver_ptr->compute_residual(grid.num_solved, grid.num_attached);
       residual_norm.push_back(solver_ptr->print_residual_norm(0));
+      solver_ptr->inital_residual_norm = solver_ptr->get_residual_norm();
 
       int count = 1;
-      while(solver_ptr->get_residual_norm() > tol)
+      while(solver_ptr->continue_iterations(count))
       {
          solver_ptr->update_solution(grid.num_solved);
          solver_ptr->compute_residual(grid.num_solved, grid.num_attached);
@@ -138,6 +140,9 @@ int main (int argc, char** argv)
       Solver_base_gpu* solver_ptr_gpu = new Solver_base_gpu;
       solver_ptr_gpu->allocate_variables();
       solver_ptr_gpu->setup_matrix_struct(grid.num_solved, grid.num_involved);
+#ifdef GPU_FULLY_OPTIMIZED
+      send_vars_to_gpu();
+#endif
       solver_ptr_gpu->set_boundary_conditions(0, 0, 1e2, 0);
       solver_ptr_gpu->initialize_solution(grid.num_solved, 1.0);
       solver_ptr_gpu->compute_time_step(grid.num_solved, grid.num_attached);
@@ -149,9 +154,10 @@ int main (int argc, char** argv)
 
       solver_ptr_gpu->compute_residual(grid.num_solved, grid.num_attached);
       residual_norm.push_back(solver_ptr_gpu->print_residual_norm(0));
+      solver_ptr_gpu->inital_residual_norm = solver_ptr_gpu->get_residual_norm();
       
       int count = 1;
-      while(solver_ptr_gpu->get_residual_norm() > tol)
+      while(solver_ptr_gpu->continue_iterations(count))
       {
          solver_ptr_gpu->update_solution(grid.num_solved);
          solver_ptr_gpu->compute_residual(grid.num_solved, grid.num_attached);

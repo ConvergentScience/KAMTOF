@@ -35,4 +35,8 @@ CDF_GLOBAL std::ofstream gpu_mem_usage_log;
 void setup_gpu_globals();
 void finalize_gpu_globals();
 
+#ifdef GPU_FULLY_OPTIMIZED
+void send_vars_to_gpu();
+#endif
+
 #endif // GPU_GLOBALS_H
