@@ -458,7 +458,7 @@ void Solver_base_gpu::dot_product(const size_t num_elements, const strict_fp_t* 
 
    oneapi::math::blas::column_major::dot(GDF::get_gpu_queue(), num_elements, x, 1, y, 1, result);
    // GDF::gpu_barrier();
-   MPI_Allreduce(result, result, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+   MPI_Allreduce(MPI_IN_PLACE, result, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 }
 
 class kg_bicgstab_axpby
@@ -936,7 +936,7 @@ void Solver_base_gpu::compute_time_step(const int num_solved, const int num_atta
                                                         data,
                                                         min_value);
 
-   MPI_Allreduce(min_value, min_value, 1, MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD);
+   MPI_Allreduce(MPI_IN_PLACE, min_value, 1, MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD);
 
    // This is the limit. (dt / dx2) + (dt / dy2) < 0.5
    delta_t = 1.0 / (min_value[0] * min_value[0] * 2.0);     // 2.0 added to reduce from limit.
@@ -1299,7 +1299,7 @@ void Solver_base_gpu::compute_residual(const int num_solved, const int num_attac
    
    oneapi::math::blas::column_major::asum(GDF::get_gpu_queue(), residual_local.size(), residual_local.gpu_data(), 1, &this->residual_norm);
 
-   MPI_Allreduce(&(this->residual_norm), &(this->residual_norm), 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+   MPI_Allreduce(MPI_IN_PLACE, &(this->residual_norm), 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 
    if(implicit_solver == true)
    {

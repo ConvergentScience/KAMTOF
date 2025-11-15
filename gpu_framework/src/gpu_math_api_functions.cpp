@@ -314,7 +314,7 @@ void l2_norm(const size_t num_elements, const strict_fp_t* const vec, strict_fp_
    }
    case 1:
    {
-      GDF::dot_product(num_elements, vec, vec, result);
+      GDF::dot_product(num_elements, vec, vec, result, impl_type);
       GDF::single_task_gpu<kg_sqrt_single_task>(result);
       break;
    }

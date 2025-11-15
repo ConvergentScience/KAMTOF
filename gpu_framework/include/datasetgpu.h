@@ -38,7 +38,7 @@ public:
       static_assert(DIMS == 0, "The [] operator is only for ZEROD in release mode and in debug mode for users to index the data as a 1D array");
 #ifndef DISABLE_GPU_KERNEL_ASSERTS
       assert(this->m_gpu_data && "Variable is not transfered to GPU (or) Non existent SILO variable is used on the GPU");
-      assert(idx < this->m_num_entries);
+      assert(idx < this->m_size);
 #endif
       return static_cast<T*>(this->m_gpu_data)[idx];
    }
@@ -49,7 +49,7 @@ public:
 #ifndef DISABLE_GPU_KERNEL_ASSERTS
       assert(this->m_gpu_data && "Variable is not transfered to GPU (or) Non existent SILO variable is used on the GPU");
       assert(!is_read_only && "Trying to get access to a read only data in an editable way");
-      assert(idx < this->m_num_entries);
+      assert(idx < this->m_size);
 #endif
       return static_cast<T*>(this->m_gpu_data)[idx];
    }

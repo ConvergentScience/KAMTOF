@@ -98,7 +98,7 @@ void demonstrate_temp_write_impl(bool async)
    if(async)
       log_progress("Time taken to for the Newton-Ralphson iterations (WITH async): " + std::to_string(time_elapsed_cpu) + " seconds.");
    else
-      log_progress("Time taken to for the Newton-Ralphson iterations (WITHOUT aysnc): " + std::to_string(time_elapsed_cpu) + " seconds.");
+      log_progress("Time taken to for the Newton-Ralphson iterations (WITHOUT async): " + std::to_string(time_elapsed_cpu) + " seconds.");
 }
 
 static void setup_problem()

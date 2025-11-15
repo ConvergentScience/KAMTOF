@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "fp_data_types.h"
+#include <cstdint>
 
 class InputParser
 {

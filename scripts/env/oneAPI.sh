@@ -12,6 +12,9 @@ required_scripts=(
     "${ONEAPI_ROOT}/tbb/latest/env/vars.sh"
     "${ONEAPI_ROOT}/umf/latest/env/vars.sh"
     "${ONEAPI_ROOT}/mkl/latest/env/vars.sh"
+    "${ONEAPI_ROOT}/mpi/latest/env/vars.sh"
+    "${ONEAPI_ROOT}/debugger/latest/env/vars.sh"
+    "${ONEAPI_ROOT}/vtune/latest/env/vars.sh"
 )
 
 # Check that each script exists before sourcing
@@ -29,3 +32,6 @@ source "${ONEAPI_ROOT}/compiler/latest/env/vars.sh" --include-intel-llvm
 source "${ONEAPI_ROOT}/tbb/latest/env/vars.sh"
 source "${ONEAPI_ROOT}/umf/latest/env/vars.sh"
 source "${ONEAPI_ROOT}/mkl/latest/env/vars.sh"
+source "${ONEAPI_ROOT}/mpi/latest/env/vars.sh"
+source "${ONEAPI_ROOT}/debugger/latest/env/vars.sh"
+source "${ONEAPI_ROOT}/vtune/latest/env/vars.sh"

@@ -145,7 +145,7 @@ if(ENABLE_GPU)
    set(SYCL_AOT_DEVICES " ") # All AOT device arch flags will be added to this list
 
    # INTEL GPU (xe-hpc) AOT flags
-   set(SYCL_AOT_TARGET_INTEL "intel_gpu_pvc,")
+   set(SYCL_AOT_TARGET_INTEL "intel_gpu_bmg_g21,intel_gpu_bmg_g31,")
 
    # AMD GPU (gfx${GFX}) AOT flags
    set(SYCL_AOT_TARGET_AMD "amd_gpu_gfx${GFX},")
@@ -172,11 +172,11 @@ if(ENABLE_GPU)
    # Append all the needed flags to TARGETS and DEVICES
    if(${SYCLALL}) # If ALL, add all at once
       set(SYCL_AOT_TARGETS "${SYCL_AOT_TARGETS_BASE}${SYCL_AOT_TARGET_INTEL}${SYCL_AOT_TARGET_AMD}${SYCL_AOT_TARGET_NVIDIA}${SYCL_AOT_TARGET_CPU}")
-      message(STATUS "SYCL AOT target set to ALL (Supported archs = AMD:gfx${GFX}, INTEL:xe-hpc, NVIDIA:sm_${SM}, CPU:spir64)")
+      message(STATUS "SYCL AOT target set to ALL (Supported archs = AMD:gfx${GFX}, INTEL:${SYCL_AOT_TARGET_INTEL} NVIDIA:sm_${SM}, CPU:spir64)")
    else() # If NOT ALL, add each vendor AOT flags as applicable
       if(${INTGPU})
          set(SYCL_AOT_TARGETS "${SYCL_AOT_TARGETS}${SYCL_AOT_TARGET_INTEL}")
-         message(STATUS "INTEL GPU (arch:xe-hpc) added to AOT target")
+         message(STATUS "INTEL GPU (arch:intel_gpu_bmg_g21,intel_gpu_bmg_g31) added to AOT target")
       endif()
       if(${AMDGPU})
          set(SYCL_AOT_TARGETS "${SYCL_AOT_TARGETS}${SYCL_AOT_TARGET_AMD}")

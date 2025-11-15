@@ -466,7 +466,7 @@ void Solver_base::compute_time_step(const int num_solved, const int num_attached
       if (data[il] < min_value)
          min_value = data[il];
    }
-   MPI_Allreduce(&min_value, &min_value, 1, MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD);
+   MPI_Allreduce(MPI_IN_PLACE, &min_value, 1, MPI_DOUBLE, MPI_MIN, MPI_COMM_WORLD);
    
    // This is the limit. (dt / dx2) + (dt / dy2) < 0.5
    delta_t = 1.0 / (min_value * min_value * 2.0);     // 2.0 added to reduce from limit.

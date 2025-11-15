@@ -203,20 +203,9 @@ void GPUManager_t::transfer_to_gpu_internal(const dataSetBase* const dsb_entry, 
          void* cpu_m_data = cur_gpu_instance.get_valid_cpu_data();
          void* gpu_m_data = cur_gpu_instance.get_valid_gpu_data();
 #ifdef GPU_DEVELOP
-         if(do_memcpy == 1) // cpu_pointer is only needed for reading
+         if(mprotect(cpu_m_data, dsb_entry->get_allocation_size(), PROT_READ | PROT_WRITE) == -1)
          {
-            if(mprotect(cpu_m_data, dsb_entry->get_allocation_size(), PROT_READ) == -1)
-            {
-               log_msg<CDF::LogLevel::ERROR>(std::string("Failure while protecting data in transfer_to_gpu for variable: ") + dsb_entry->name());
-            }
-         }
-         else
-         {
-            assert(do_memcpy == -1);
-            if(mprotect(cpu_m_data, dsb_entry->get_allocation_size(), PROT_READ | PROT_WRITE) == -1)
-            {
-               log_msg<CDF::LogLevel::ERROR>(std::string("Failure while protecting data in transfer_to_gpu for variable: ") + dsb_entry->name());
-            }
+            log_msg<CDF::LogLevel::ERROR>(std::string("Failure while protecting data in transfer_to_gpu for variable: ") + dsb_entry->name());
          }
 #endif
          const void* const src_data_ptr = (do_memcpy == 1) ? cpu_m_data : gpu_m_data;
@@ -435,20 +424,9 @@ void GPUManager_t::transfer_to_cpu_internal(const dataSetBase * const dsb_entry,
          void* cpu_m_data = cur_gpu_instance.get_valid_cpu_data();
          void* gpu_m_data = cur_gpu_instance.get_valid_gpu_data();
 #ifdef GPU_DEVELOP
-         if(do_memcpy == -1) // cpu_pointer is only needed for reading
+         if(mprotect(cpu_m_data, dsb_entry->get_allocation_size(), PROT_READ | PROT_WRITE) == -1)
          {
-            if(mprotect(cpu_m_data, dsb_entry->get_allocation_size(), PROT_READ) == -1)
-            {
-               log_msg<CDF::LogLevel::ERROR>(std::string("Failure while protecting data in transfer_to_gpu for variable: ") + dsb_entry->name());
-            }
-         }
-         else
-         {
-            assert(do_memcpy == 1);
-            if(mprotect(cpu_m_data, dsb_entry->get_allocation_size(), PROT_READ | PROT_WRITE) == -1)
-            {
-               log_msg<CDF::LogLevel::ERROR>(std::string("Failure while protecting data in transfer_to_gpu for variable: ") + dsb_entry->name());
-            }
+            log_msg<CDF::LogLevel::ERROR>(std::string("Failure while protecting data in transfer_to_gpu for variable: ") + dsb_entry->name());
          }
 #endif
          const void* const src_data_ptr = (do_memcpy == 1) ? gpu_m_data : cpu_m_data;
