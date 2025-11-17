@@ -6,10 +6,7 @@ KAMTOF is a SYCL based GPU data framework for rapid incremental GPU porting of a
 
 KAMTOF requires the following tools:
 - Intel oneAPI toolkit version 2025.1+
-- CUDA toolkit v12.4+
-- ROCm toolkit v6.2+
 - oneMath v0.7 (Built with support for BLAS and SPARSE libraries of all 3 vendors)
-- HPCX MPI Library 2.21+
 - Intel OCLOC
 
 <a name="env_setup"></a>
@@ -18,10 +15,7 @@ KAMTOF requires the following tools:
 KAMTOF provides an environment [setup script](scripts/setup_env.sh) in the scripts folder to setup the environment needed for building. The setup script requires the following environment variables to be setup in the [export_root.sh](scripts/export_roots.sh) script:
 
 - ONEAPI_ROOT
-- CUDA_ROOT
-- ROCM_ROOT
 - ONEMATH_ROOT
-- HPCX_ROOT
 
 Once the values of these ROOTs are edited in the [export_root.sh](scripts/export_roots.sh) script, the environment for building and running can be setup by performing the following command:
 
@@ -77,29 +71,17 @@ These are the CMake options provided by KAMTOF. Please preface all these options
 
 - HW : Specifies the target hardware for AOT compilation
   - Options: Any combination of the following options can be provided as a list enclosed by single qoutes and delimited by semi-colon ('<target_option_1>;<target_option_2>;<target_option_3>') 
-    - INTGPU : Compile for Intel GPUs (Currently only supports PVC cards)
-    - NVDGPU : Compile for NVIDIA GPUs
-    - AMDGPU : Compile for AMD GPUs
+    - INTGPU : Compile for Intel GPUs (Currently only supports BMG cards)
     - SYCLCPU: Compile for x86 CPUs
     - ALL: Compile for all of the above
   - Default: ALL
   - NOTE: SYCLCPU is always added to the HW list
- 
-- SM : Specify the architecture of NVIDIA GPUs to target
-  - Options: 61/70/75/80/86 etc.
-  - Default: 70
-  - NOTE: If SM is mentioned as 70, all NVIDIA GPUs with compute capability 7.0+ can be used to run this executable
- 
-- GFX : Specify the architecture of AMD GPUs to target
-  - Options: 942a/1100/1101 etc.
-  - Default: 1100
- 
 Here is an example of a CMake command to build for NVIDIA GPUs (arch 86) in release mode:
 
 ```
 mkdir build_release
 cd build_release
-cmake -DCMAKE_BUILD_TYPE=RELEASE -DENABLE_GPU=ON -DHW='NVDGPU;SYCLCPU' ../ -DSM=86
+cmake -DCMAKE_BUILD_TYPE=RELEASE -DENABLE_GPU=ON -DHW='INTGPU;SYCLCPU' ../
 make -j8
 ```
 
